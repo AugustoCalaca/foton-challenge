@@ -23,6 +23,7 @@ const connect = _ => {
 
     mongoose.connection.on('disconnected', _ => {
       console.log('[Mongoose] - Disconnected');
+      reject();
     });
   });
 };
