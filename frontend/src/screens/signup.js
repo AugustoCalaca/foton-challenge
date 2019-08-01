@@ -8,6 +8,7 @@ import Input from '../components/Input';
 import InputContainer from '../components/InputContainer';
 import InputTitle from '../components/InputTitle';
 import Button from '../components/Button';
+import VisiblePwd from '../components/VisiblePwd';
 
 const SIGNUP = gql`
   mutation signup($userName: String!, $password: String!) {
@@ -25,30 +26,61 @@ const Signup = ({ navigation }) => {
   const [borderUserName, setBorderUserName] = useState('');
   const [borderPassword, setBorderPassword] = useState('');
   const [borderConfirm, setBorderConfirm] = useState('');
+  const [visiblePwd, setVisiblePwd] = useState(true);
+  const [visibleConfirmPwd, setVisibleConfirmPwd] = useState(true);
+
+  const handleVisiblePwd = _ => {
+    setVisiblePwd(!visiblePwd);
+  };
+
+  const handleVisibleConfirmPwd = _ => {
+    setVisibleConfirmPwd(!visibleConfirmPwd);
+  };
 
   const handleSubmit = _ => {
     if(userName === '') {
-      setBorderUserName('error')
+      setBorderUserName('error');
       return false;
     } else {
-      setBorderUserName('')
+      setBorderUserName('');
     }
 
     if(password === '') {
-      setBorderPassword('error')
+      setBorderPassword('error');
       return false;
     } else {
-      setBorderPassword('')
+      setBorderPassword('');
     }
     if(confirm === '') {
-      setBorderConfirm('error')
+      setBorderConfirm('error');
       return false;
     } else {
-      setBorderConfirm('')
+      setBorderConfirm('');
+    }
+
+    if(password !== confirm) {
+      setBorderConfirm('error');
+      Alert.alert(`Passwords don't match`);
+      return false;
     }
 
     return true;
   };
+
+  const onCompletedMutation = _ => {
+    Alert.alert('Signup Success :)', '', [{
+        text: 'Ok',
+        onPress: _ => navigation.navigate('List')
+      }]
+    );
+  };
+
+  const onErrorMutation = error => (
+    Alert.alert(
+      'Unable to Signup :(',
+      `${error.message.split('GraphQL error:')[1]}`
+    )
+  );
 
   useEffect(_ => {
     if(borderUserName === 'error')
@@ -63,7 +95,7 @@ const Signup = ({ navigation }) => {
     <View style={{backgroundColor: '#fff', marginTop: 120}}>
       <InputTitle title='UserName' />
       <InputContainer>
-        <MyIcon name='user-alt' size={18} color='#fff' />
+        <MyIcon name='user-alt' side='left' size={18} color='#fff' />
         <Input
           selectionColor='#4032DA'
           placeholder='Enter UserName'
@@ -75,45 +107,42 @@ const Signup = ({ navigation }) => {
 
       <InputTitle title='Password'/>
       <InputContainer>
-        <MyIcon name='lock' size={18} color='#fff' />
+        <MyIcon name='lock' size={18} />
         <Input
           selectionColor='#4032DA'
           placeholder='Enter Password'
           onChangeText={pass => setPassword(pass)}
           borderColor={borderPassword}
           value={password}
-          />
+          secureTextEntry={visiblePwd}
+          maxLength={15}
+        />
+        <VisiblePwd visible={visiblePwd} onPress={handleVisiblePwd} />
       </InputContainer>
 
       <InputTitle title='Confirm'/>
       <InputContainer>
-        <MyIcon name='lock' size={18} color='#fff' />
+        <MyIcon name='lock' side='left' size={18} />
         <Input
           selectionColor='#4032DA'
           placeholder='Confirm Password'
           onChangeText={pass => setConfirm(pass)}
           borderColor={borderConfirm}
           value={confirm}
+          secureTextEntry={visibleConfirmPwd}
           maxLength={15}
         />
+        <VisiblePwd visible={visibleConfirmPwd} onPress={handleVisibleConfirmPwd} />
       </InputContainer>
 
       <Mutation
         mutation={SIGNUP}
         variables={{userName, password }}
-        onCompleted={navigation.navigate('List')}
-        onError={_ => (
-          Alert.alert(
-            'A error happened',
-            `Unable to signup :(`
-          )
-        )}
+        onCompleted={onCompletedMutation}
+        onError={onErrorMutation}
       >
-        {(signup, { data, loading, error }) => {
+        {(signup, { loading }) => {
           if(loading) return <ProgressBarAndroid />
-          if(error) return (
-            <Text>{error.message}</Text>
-          )
 
           return (
             <View style={{alignItems: 'center'}}>
