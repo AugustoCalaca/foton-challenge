@@ -4,19 +4,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const IconBackground = styled.View`
   top: 5;
-  left: 18;
+  left: 15;
   width: 35;
   height: 35;
   border-radius: 20;
   position: absolute;
   align-items: center;
   justify-content: center;
-  background-color: #120E3D;
+  background-color: ${props => props.background ? props.background : '#120E3D'};
 `;
 
-const MyIcon = ({ name, size, color }) => (
-  <IconBackground>
-    <Icon name={name} size={size} color={color} />
+const MyIcon = ({ name, size, color, background }) => (
+  <IconBackground background={background}>
+    <Icon name={name} size={size} color={color ? color : '#fff'} />
   </IconBackground>
 );
 
