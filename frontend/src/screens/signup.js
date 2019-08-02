@@ -148,13 +148,14 @@ const Signup = ({ navigation }) => {
           if(loading) return <ProgressBarAndroid />
 
           return (
-            <View style={{alignItems: 'center'}}>
-              <Button title='Signup' onPress={_ => {
+            <Button
+              title='Signup'
+              onPress={_ => {
                 if(handleSubmit()) {
                   signup();
                 }
-              }} />
-            </View>
+              }}
+            />
           )
         }}
       </Mutation>
