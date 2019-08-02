@@ -4,6 +4,10 @@ import styled from 'styled-components/native';
 
 const { width: WIDTH } = Dimensions.get('window');
 
+const StyledView = styled.View`
+  align-items: center;
+`;
+
 const StyledTouchable = styled.TouchableOpacity`
   height: 35;
   margin-top: 30;
@@ -24,9 +28,11 @@ const StyledText = styled.Text`
 `;
 
 const Button = ({ title, onPress }) => (
-  <StyledTouchable activeOpacity={0.8} onPress={onPress}>
-    <StyledText>{title}</StyledText>
-  </StyledTouchable>
+  <StyledView>
+    <StyledTouchable activeOpacity={0.8} onPress={onPress}>
+      <StyledText>{title}</StyledText>
+    </StyledTouchable>
+  </StyledView>
 );
 
 export default Button;
