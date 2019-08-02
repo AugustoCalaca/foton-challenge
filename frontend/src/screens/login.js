@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ProgressBarAndroid , Alert} from 'react-native';
+import { View, ProgressBarAndroid, Alert} from 'react-native';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -117,13 +117,14 @@ const Login = ({ navigation }) => {
           if(loading) return <ProgressBarAndroid />
 
           return (
-            <View style={{alignItems: 'center'}}>
-              <Button title='Login' onPress={_ => {
+            <Button
+              title='Login'
+              onPress={_ => {
                 if(handleSubmit()) {
                   login();
                 }
-              }} />
-            </View>
+              }}
+            />
           )
         }}
       </Mutation>
