@@ -10,6 +10,8 @@ import Button from '../components/Button';
 import RegisterButton from '../components/RegisterButton';
 import VisiblePwd from '../components/VisiblePwd';
 
+import { getToken, signin } from '../utils/auth';
+
 const LOGIN = gql`
   mutation login($userName: String!, $password: String!) {
     login(userName: $userName, password: $password) {
@@ -32,23 +34,26 @@ const Login = ({ navigation }) => {
 
   const handleSubmit = _ => {
     if(userName === '') {
-      setBorderUserName('error')
+      setBorderUserName('error');
       return false;
     } else {
-      setBorderUserName('')
+      setBorderUserName('');
     }
 
     if(password === '') {
-      setBorderPassword('error')
+      setBorderPassword('error');
       return false;
     } else {
-      setBorderPassword('')
+      setBorderPassword('');
     }
 
     return true;
   };
 
-  const onCompletedMutation = _ => navigation.navigate('List');
+  const onCompletedMutation = ({ login }) => {
+    signin(login.jwt);
+    navigation.navigate('List');
+  };
 
   const onErrorMutation = error => (
     Alert.alert(
@@ -56,6 +61,17 @@ const Login = ({ navigation }) => {
       `${error.message.split('GraphQL error:')[1]}`
     )
   );
+
+  const verifyToken = async _ => {
+    const token = await getToken();
+    if(token) {
+      navigation.navigate('List');
+    }
+  };
+
+  useEffect(_ => {
+    verifyToken();
+  }, []);
 
   useEffect(_ => {
     if(borderUserName === 'error')
@@ -115,12 +131,6 @@ const Login = ({ navigation }) => {
       <RegisterButton onPress={_ => { navigation.navigate('Signup')}} />
     </View>
   );
-};
-
-Login.navigationOptions = ({ navigation }) => {
-  return {
-    headerTitle: navigation.getParam('headerTitle')
-  }
 };
 
 export default Login;
