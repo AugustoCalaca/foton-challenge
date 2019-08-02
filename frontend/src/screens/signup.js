@@ -10,6 +10,8 @@ import InputTitle from '../components/InputTitle';
 import Button from '../components/Button';
 import VisiblePwd from '../components/VisiblePwd';
 
+import { signin } from '../utils/auth';
+
 const SIGNUP = gql`
   mutation signup($userName: String!, $password: String!) {
     signup(userName: $userName, password: $password) {
@@ -67,7 +69,8 @@ const Signup = ({ navigation }) => {
     return true;
   };
 
-  const onCompletedMutation = _ => {
+  const onCompletedMutation = ({ signup }) => {
+    signin(signup.jwt)
     Alert.alert('Signup Success :)', '', [{
         text: 'Ok',
         onPress: _ => navigation.navigate('List')
