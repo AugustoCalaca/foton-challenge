@@ -1,19 +1,18 @@
 import { AsyncStorage } from 'react-native';
 
-const AUTH = 'AUTH'
+const AUTH = 'A_AUTH_TOKEN_VERY_STRONG'
 
 const getToken = async _ => {
   const token = await AsyncStorage.getItem(AUTH);
   return token;
 };
 
-const signin = (newToken) => {
-  const token = newToken;
-  return AsyncStorage.setItem(AUTH, newToken);
+const signin = async (newToken) => {
+  await AsyncStorage.setItem(AUTH, newToken);
 };
 
 const signout = _ => {
-  return AsyncStorage.removeItem(AUTH);
+  AsyncStorage.removeItem(AUTH);
 };
 
 module.exports = {
