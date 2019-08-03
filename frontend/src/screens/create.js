@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import {
-  View,
-  StyleSheet,
   ProgressBarAndroid,
-  Text,
-  TouchableOpacity,
   Alert,
-  Dimensions,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Input from '../components/Input';
-import InputContainer from '../components/InputContainer';
-import InputTitle from '../components/InputTitle';
 import MyIcon from '../components/MyIcon';
+import Header from '../components/Header';
+import Button from '../components/Button';
+import InputTitle from '../components/InputTitle';
+import InputContainer from '../components/InputContainer';
 
 const NEW_BOOK_MUTATION = gql`
   mutation addBook($title: String!, $author: AuthorInput!) {
@@ -29,12 +25,13 @@ const NEW_BOOK_MUTATION = gql`
   }
 `;
 
-const { width: WIDTH } = Dimensions.get('window');
-
 const Create = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [age, setAge] = useState(0);
+  const [borderTitle, setBorderTitle] = useState('');
+  const [borderName, setBorderName] = useState('');
+  const [borderAge, setBorderAge] = useState('');
 
   // only numeric characters
   const handleInputChange = ageInput => {
@@ -42,11 +39,37 @@ const Create = ({ navigation }) => {
       setAge(parseInt(ageInput));
   };
 
+  const handleSubmit = _ => {
+    if(title === '') {
+      setBorderTitle('error');
+      return false;
+    } else {
+      setBorderTitle('');
+    }
+
+    if(name === '') {
+      setBorderName('error');
+      return false;
+    } else {
+      setBorderName('');
+    }
+
+    if(age === 0) {
+      setBorderAge('error');
+      return false;
+    } else {
+      setBorderAge('');
+    }
+
+    return true;
+  };
+
   const completedMutation = _ => {
     setTitle('');
     setName('');
     setAge('');
-    Alert.alert('Created Book',
+    Alert.alert(
+      'Created Book',
       'You can create as many books as you like o/', [{
         text: 'Ok',
         onPress: _ => navigation.goBack()
@@ -54,11 +77,16 @@ const Create = ({ navigation }) => {
     );
   };
 
+  const onErrorMutation = error => (
+    Alert.alert(
+      'Unable to create book :(',
+      `${error.message.split('GraphQL error:')[1]}`
+    )
+  );
+
   return (
     <>
-      <View style={styles.head}>
-        <Icon name='book-open' size={80} color='#fff' />
-      </View>
+      <Header nameIcon='book-open' />
 
       <InputTitle title='Title' />
       <InputContainer>
@@ -67,7 +95,9 @@ const Create = ({ navigation }) => {
           selectionColor='#4032DA'
           placeholder='Enter Title of the Book'
           multiline={true}
+          scrollEnabled={true}
           onChangeText={title => setTitle(title)}
+          borderColor={borderTitle}
           value={title}
         />
       </InputContainer>
@@ -78,8 +108,8 @@ const Create = ({ navigation }) => {
         <Input
           selectionColor='#4032DA'
           placeholder='Enter Name of the Author'
-          multiline={true}
           onChangeText={name => setName(name)}
+          borderColor={borderName}
           value={name}
         />
       </InputContainer>
@@ -92,6 +122,7 @@ const Create = ({ navigation }) => {
           placeholder='Enter Age of the Auhtor'
           keyboardType='numeric'
           onChangeText={handleInputChange}
+          borderColor={borderAge}
           value={age}
           maxLength={2}
         />
@@ -101,70 +132,25 @@ const Create = ({ navigation }) => {
         mutation={NEW_BOOK_MUTATION}
         variables={{ title, author: { name, age } }}
         onCompleted={completedMutation}
-        onError={_ => (
-          Alert.alert(
-            'A error happened',
-            `Unable to create book :(`
-          )
-        )}
+        onError={onErrorMutation}
       >
-        {(addBook, { data, loading, error }) => {
+        {(addBook, { loading }) => {
           if(loading) return <ProgressBarAndroid />
-          if(error) return (
-            <Text>{error.message}</Text>
-          )
 
           return (
-            <View style={styles.buttonContent}>
-              <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={_ => {
-                if(title === '' || name === '' || age === '')
-                  Alert.alert('Blank Field', `Fill them all :/`);
-                else
+            <Button
+              title='Create Book'
+              onPress={_ => {
+                if(handleSubmit()) {
                   addBook();
-              }}>
-                <Text style={styles.textButton}>Create Book</Text>
-              </TouchableOpacity>
-            </View>
+                }
+              }}
+            />
           )
         }}
       </Mutation>
     </>
   )
 };
-
-const styles = StyleSheet.create({
-  buttonContent: {
-    width: null,
-    height: null,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  head: {
-    height: 180,
-    backgroundColor: '#2F259E',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: WIDTH - 20,
-    marginTop: 30,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: 'rgba(0, 0, 0, 0.35)',
-    marginHorizontal: 20,
-    backgroundColor: '#4032DA'
-  },
-  textButton: {
-    color: '#fff',
-    fontWeight: 'bold'
-  },
-  text: {
-    color: '#1D1661',
-  }
-});
 
 export default Create;
