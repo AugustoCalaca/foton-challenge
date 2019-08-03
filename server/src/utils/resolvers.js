@@ -13,4 +13,9 @@ module.exports = {
     signup: (_, args, context) => AuthResolver.signup(args, context),
     login: (_, args, context) => AuthResolver.login(args, context)
   },
+  Subscription: {
+    bookAdded: {
+      subscribe: _ => BookResolver.pubsub.asyncIterator([BookResolver.BOOK_ADDED])
+    }
+  }
 };
