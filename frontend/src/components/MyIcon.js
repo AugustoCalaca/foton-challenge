@@ -16,7 +16,7 @@ const IconBackground = styled.View`
 
 const MyIcon = ({ name, size, color, background }) => (
   <IconBackground background={background}>
-    <Icon name={name} size={size} color={color ? color : '#fff'} />
+    <Icon name={name} size={size ? size : 18} color={color ? color : '#fff'} />
   </IconBackground>
 );
 
