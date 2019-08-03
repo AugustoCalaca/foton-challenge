@@ -33,9 +33,13 @@ const typeDefs = gql`
     searchBooks(search: String!): [Book]
     currentUser: User
   }
+  type Subscription {
+    bookAdded: Book
+  }
   schema {
     query: Query
     mutation: Mutation
+    subscription: Subscription
   }
 `;
 
