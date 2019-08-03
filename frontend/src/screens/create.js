@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import {
@@ -83,6 +83,15 @@ const Create = ({ navigation }) => {
       `${error.message.split('GraphQL error:')[1]}`
     )
   );
+
+  useEffect(_ => {
+    if(borderTitle === 'error')
+      setBorderTitle('');
+    if(borderName === 'error')
+      setBorderName('');
+    if(borderAge === 'error')
+      setBorderAge('');
+  }, [title, name, age]);
 
   return (
     <>
