@@ -98,19 +98,19 @@ const Signup = ({ navigation }) => {
     <View style={{backgroundColor: '#fff', marginTop: 120}}>
       <InputTitle title='UserName' />
       <InputContainer>
-        <MyIcon name='user-alt' side='left' size={18} color='#fff' />
+        <MyIcon name='user-alt' color='#fff' />
         <Input
           selectionColor='#4032DA'
           placeholder='Enter UserName'
           onChangeText={name => setUserName(name)}
           borderColor={borderUserName}
           value={userName}
-          />
+        />
       </InputContainer>
 
       <InputTitle title='Password'/>
       <InputContainer>
-        <MyIcon name='lock' size={18} />
+        <MyIcon name='lock' />
         <Input
           selectionColor='#4032DA'
           placeholder='Enter Password'
@@ -125,7 +125,7 @@ const Signup = ({ navigation }) => {
 
       <InputTitle title='Confirm'/>
       <InputContainer>
-        <MyIcon name='lock' side='left' size={18} />
+        <MyIcon name='lock' size={18} />
         <Input
           selectionColor='#4032DA'
           placeholder='Confirm Password'

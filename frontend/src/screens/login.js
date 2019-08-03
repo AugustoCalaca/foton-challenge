@@ -83,7 +83,7 @@ const Login = ({ navigation }) => {
   return (
     <View style={{backgroundColor: '#fff', marginTop: 150}}>
       <InputContainer >
-        <MyIcon name='user-alt' size={18} />
+        <MyIcon name='user-alt' />
         <Input
           selectionColor='#4032DA'
           placeholder='Enter UserName'
@@ -94,7 +94,7 @@ const Login = ({ navigation }) => {
       </InputContainer>
 
       <InputContainer>
-        <MyIcon name='lock' size={18} />
+        <MyIcon name='lock' />
         <Input
           selectionColor='#4032DA'
           placeholder='Enter Password'
