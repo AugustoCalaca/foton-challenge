@@ -10,7 +10,6 @@ const signup = async ({ userName, password }) => {
     }
 
     const hash = await bcrypt.hash(password, 10);
-    console.log('criou senha')
     await User.create({ userName, password: hash });
 
     const user = await User.findOne({ userName });
@@ -18,7 +17,7 @@ const signup = async ({ userName, password }) => {
 
     return user;
   } catch(err) {
-    console.log('deu ruim')
+    console.log('error signup')
     return err;
   }
 };
@@ -39,6 +38,7 @@ const login = async ({ userName, password }) => {
 
     return user;
   } catch(err) {
+    console.log('error login')
     return err;
   }
 };
