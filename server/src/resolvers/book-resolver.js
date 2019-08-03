@@ -1,5 +1,9 @@
+const { PubSub } = require('apollo-server');
 const Book = require('../models/book-model');
 const Author = require('../models/author-model');
+
+const BOOK_ADDED = 'BOOK_ADDED';
+const pubsub = new PubSub();
 
 const getBook = async (id) => {
   try {
@@ -19,8 +23,13 @@ const getBooks = async _ => {
 };
 
 const searchBooks = async (search) => {
+  const andSearch = search
+    .split(' ')
+    .map(str => '\"' + str + '\"')
+    .join(' ');
+
   return await Book
-    .find({ $text: { $search: search } })
+    .find({ $text: { $search: andSearch } })
     .populate('author')
     .sort({ updatedAt: -1 });
 };
@@ -34,7 +43,6 @@ const addBook = async ({ title, author }) => {
 
     console.log(findAuthor);
     if(!!findAuthor) {
-      console.log('find author');
       // same author with same title means that the book is duplicated
       const findBook = await Book.findOne({ title });
       console.log('book');
@@ -44,14 +52,14 @@ const addBook = async ({ title, author }) => {
       }
       else {
         const data = await Book.create({ title, author: findAuthor });
+        await pubsub.publish(BOOK_ADDED, { bookAdded: data })
         return data;
       }
     }
     else {
       const newAuthor = await Author.create(author)
-      console.log(newAuthor);
-      console.log('new author');
       const data = await Book.create({ title, author: newAuthor });
+      await pubsub.publish(BOOK_ADDED, { bookAdded: data })
       return data;
     }
   } catch(err) {
@@ -66,4 +74,6 @@ module.exports = {
   getBooks,
   searchBooks,
   addBook,
+  pubsub,
+  BOOK_ADDED
 };
