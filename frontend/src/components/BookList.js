@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   ProgressBarAndroid,
-  FlatList,
-  Alert,
+  Alert
 } from 'react-native';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import Item from '../components/Item';
+
+import FlatListSubscription from './FlatListSubscription';
 
 const BOOKS_QUERY = gql`
   query getBooks {
@@ -26,43 +26,56 @@ const SEARCH_BOOKS_QUERY = gql`
   }
 `;
 
+const BOOK_ADDED = gql`
+  subscription bookAdded {
+    bookAdded {
+      id
+      title
+    }
+  }
+`;
+
 const BookList = ({ navigation, searchText }) => {
+  const onErrorQuery = _ => {
+    return (
+      Alert.alert(
+        'A error happened',
+        `Unable to list books :(`)
+    )
+  };
+
   return (
     <Query
       query={searchText === '' ? BOOKS_QUERY : SEARCH_BOOKS_QUERY}
       variables={{search: searchText}}
+      onError={onErrorQuery}
     >
-      {({loading, error, data}) => {
+      {({loading, data, subscribeToMore}) => {
         if(loading) return <ProgressBarAndroid />
-        if(error) return (
-          Alert.alert('A error happened', `Unable to list books :(`)
-        )
 
-        const booksToRender = searchText === '' ? data.getBooks : data.searchBooks;
+        const handleSubscribeToMore = subscribeToMore => {
+          subscribeToMore({
+            document: BOOK_ADDED,
+            updateQuery: (prev, { subscriptionData }) => {
+              if(!subscriptionData.data) return prev;
 
-        const emptyComponent = _ => (
-          <Item
-            title='Sorry, no results'
-            nameIcon='exclamation-triangle'
-            backgroundIcon='rgba(207, 0, 15, 1)'
-          />
-        )
+              const newBook = subscriptionData.data.bookAdded;
 
-        const handleRenderItem = ({ item }) => (
-          <Item
-            key={item.id}
-            title={item.title}
-            nameIcon='book'
-            onPress={_ => navigation.navigate('Detail', { id: item.id })}
-          />
-        );
+              return Object.assign({}, prev, {
+                getBooks: [
+                  newBook,
+                  ...prev.getBooks
+                ]
+              })
+            }
+          })
+        };
 
         return (
-          <FlatList
-            data={booksToRender}
-            renderItem={handleRenderItem}
-            ListEmptyComponent={emptyComponent}
-            style={{backgroundColor: '#ddd', padding: 15,}}
+          <FlatListSubscription
+            navigation={navigation}
+            subscribeToMore={_ => handleSubscribeToMore(subscribeToMore)}
+            data={searchText === '' ? data.getBooks : data.searchBooks}
           />
         )
       }}
