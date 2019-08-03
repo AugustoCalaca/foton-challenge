@@ -9,7 +9,7 @@ import Routes from './routes';
 const App = _ => {
   return (
     <ApolloProvider client={apolloClient}>
-      <StatusBar barStyle='light-content' />
+      <StatusBar backgroundColor='#271E85' barStyle='light-content' />
       <Routes />
     </ApolloProvider>
   );
