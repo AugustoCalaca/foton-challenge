@@ -41,19 +41,19 @@ const Detail = ({ navigation }) => {
             <Header nameIcon='book-reader' />
 
             <View style={{marginTop: 15}}>
-              <InputTitle title={`Book's title`} />
+              <InputTitle title={'Book Title'} />
               <ItemDetail
                 title={bookToRender.title}
                 nameIcon='bookmark'
               />
 
-              <InputTitle title={`Book's author`} />
+              <InputTitle title={'Book Author'} />
               <ItemDetail
                 title={bookToRender.author.name}
                 nameIcon='pen-fancy'
               />
 
-              <InputTitle title={`Age book's age`} />
+              <InputTitle title={'Age Author'} />
               <ItemDetail
                 title={bookToRender.author.age}
                 nameIcon='heart'
