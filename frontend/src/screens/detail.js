@@ -53,7 +53,7 @@ const Detail = ({ navigation }) => {
                 nameIcon='pen-fancy'
               />
 
-              <InputTitle title={'Age Author'} />
+              <InputTitle title={'Author Age'} />
               <ItemDetail
                 title={bookToRender.author.age}
                 nameIcon='heart'
