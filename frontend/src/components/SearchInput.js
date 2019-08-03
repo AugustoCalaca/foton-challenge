@@ -8,7 +8,7 @@ const StyledContainer = styled.View`
   margin-right: 5;
   justify-content: center;
   align-items: center;
-  background-color: #120E3D;
+  background-color: #271E85;
   border-width: 1;
   border-radius: 30;
   border-color: rgba(255, 255, 255, 0.35);
@@ -33,7 +33,7 @@ const SearchInput = ({ onChangeText }) => (
   <StyledContainer>
     <StyledIcon name='search' size={14} color='#fff' />
     <StyledInput
-      selectionColor='#4032DA'
+      selectionColor='#fff'
       placeholder='Search'
       placeholderTextColor='rgba(255, 255, 255, 0.35)'
       onChangeText={onChangeText}
