@@ -36,13 +36,18 @@ const getUser = async (authorization) => {
   return null;
 };
 
-const context = ({ req }) => {
-  const { authorization } = req.headers;
-  const user = getUser(authorization);
+const context = ({ req, connection }) => {
+  if(connection) {
+    return connection.context;
+  }
+  else {
+    const { authorization } = req.headers;
+    const user = getUser(authorization);
 
-  return {
-    user
-  };
+    return {
+      user
+    };
+  }
 };
 
 module.exports = context;
