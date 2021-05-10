@@ -985,15 +985,7 @@ apollo-graphql@^0.3.3:
     apollo-env "0.5.1"
     lodash.sortby "^4.7.0"
 
-apollo-link-ws@^1.0.18:
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/apollo-link-ws/-/apollo-link-ws-1.0.18.tgz#281b9b0826d5fc7e2aa14d2784c5193d8b761112"
-  integrity sha512-nrWh9m7k1FQw1AK1GB1VTJS0o01cpsP2RYmTAh2j+P4lL2/72WgsblhbuF+yA1/jsgVrzg6xa+TNw3UwgGp3+g==
-  dependencies:
-    apollo-link "^1.2.12"
-    tslib "^1.9.3"
-
-apollo-link@^1.2.12, apollo-link@^1.2.3:
+apollo-link@^1.2.3:
   version "1.2.12"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.12.tgz#014b514fba95f1945c38ad4c216f31bcfee68429"
   integrity sha512-fsgIAXPKThyMVEMWQsUN22AoQI+J/pVXcjRGAShtk97h7D8O+SPskFinCGEkxPeQpE83uKaqafB2IyWdjN+J3Q==
@@ -2574,9 +2566,9 @@ lodash.sortby@^4.7.0:
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
 lodash@^4.17.11, lodash@^4.17.13:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 long@^4.0.0:
   version "4.0.0"
